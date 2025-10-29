@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h3>Registration Form</h3>
+    <form name="registrationForm" method="post" action="vuinbox.html" onsubmit="return validateForm()">
+        <label>Name:</label><br>
+        <input type="text" name="name" placeholder="Enter your name"><br>
+        <div id="nameError" class="error"></div>
+
+        <label>Email:</label><br>
+        <input type="email" name="email" placeholder="Enter your email"><br>
+        <div id="emailError" class="error"></div>
+
+        <label>Password:</label><br>
+        <input type="password" name="password" placeholder="Enter password"><br>
+        <div id="passwordError" class="error"></div>
+
+        <input type="submit" value="Register">
+    </form>
+
+    <script>
+        function validateForm() {
+            clearErrors();
+            const name = document.registrationForm.name.value.trim();
+            const email = document.registrationForm.email.value.trim();
+            const password = document.registrationForm.password.value;
+
+            let isValid = true;
+
+            // Name check
+            if (name === "") {
+                showError("nameError", "Name is required");
+                isValid = false;
+            }
+
+            // Email check
+            if (email === "") {
+                showError("emailError", "Email is required");
+                isValid = false;
+            }
+
+            // Password basic length check
+            if (password.length < 6) {
+                showError("passwordError", "Password must be at least 6 characters long");
+                isValid = false;
+            } 
+            // Advanced password strength check
+            else {
+                const hasUpperCase = /[A-Z]/.test(password);
+                const hasLowerCase = /[a-z]/.test(password);
+                const hasNumber = /[0-9]/.test(password);
+                const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+                if (!hasUpperCase) {
+                    showError("passwordError", "Password must include at least one uppercase letter");
+                    isValid = false;
+                } 
+                else if (!hasLowerCase) {
+                    showError("passwordError", "Password must include at least one lowercase letter");
+                    isValid = false;
+                } 
+                else if (!hasNumber) {
+                    showError("passwordError", "Password must include at least one number");
+                    isValid = false;
+                } 
+                else if (!hasSpecialChar) {
+                    showError("passwordError", "Password must include at least one special character");
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+
+        function showError(elementId, message) {
+            document.getElementById(elementId).textContent = message;
+        }
+
+        function clearErrors() {
+            document.getElementById("nameError").textContent = "";
+            document.getElementById("emailError").textContent = "";
+            document.getElementById("passwordError").textContent = "";
+        }
+    </script>
+</body>
+</html>
